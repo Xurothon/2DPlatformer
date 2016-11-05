@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{7ACCD59F-22E6-6410-ABA0-AE03FF5D6168}") = "2D Platformer Hero", "Assembly-CSharp.csproj", "{42CBDF25-1D8D-1AA5-509E-8531444986C5}"
 EndProject
-Project("{7ACCD59F-22E6-6410-ABA0-AE03FF5D6168}") = "2D Platformer Hero", "Assembly-CSharp-Editor.csproj", "{98DC688A-CC57-0091-0536-1985E8BFC44A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{42CBDF25-1D8D-1AA5-509E-8531444986C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42CBDF25-1D8D-1AA5-509E-8531444986C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42CBDF25-1D8D-1AA5-509E-8531444986C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98DC688A-CC57-0091-0536-1985E8BFC44A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98DC688A-CC57-0091-0536-1985E8BFC44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98DC688A-CC57-0091-0536-1985E8BFC44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98DC688A-CC57-0091-0536-1985E8BFC44A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
