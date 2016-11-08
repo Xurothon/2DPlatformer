@@ -10,15 +10,16 @@ public class PlayerController : MonoBehaviour {
     public float groundCheckRadius;
     public LayerMask whatIsGround;
     public bool isGrounded;
-    
+    public Vector3 respawnPosition;
+    public LevelManager theLevelManager;
 
-	// Use this for initialization
 	void Start () {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
+        respawnPosition = transform.position;
+        theLevelManager = FindObjectOfType<LevelManager>();
     }
 	
-	// Update is called once per frame
 	void Update () {
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
@@ -44,7 +45,15 @@ public class PlayerController : MonoBehaviour {
         myAnim.SetFloat("Speed", Mathf.Abs(myRigidbody.velocity.x));
         myAnim.SetBool("Grounded",isGrounded);
 
-
 	}
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "KillPlane") {
+            theLevelManager.Respawn();
+        }
+        if (other.tag == "Checkpoint") {
+            respawnPosition = other.transform.position;
+        }
+    }
 
 }
