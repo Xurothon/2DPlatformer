@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     public bool isGrounded;
     public Vector3 respawnPosition;
     public LevelManager theLevelManager;
+    public GameObject stopmBox;
 
 	void Start () {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -41,9 +42,15 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButtonDown("Jump") && isGrounded) {
             myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, jumpSpeed, 0f);
         }
-
         myAnim.SetFloat("Speed", Mathf.Abs(myRigidbody.velocity.x));
         myAnim.SetBool("Grounded",isGrounded);
+        if (myRigidbody.velocity.y < 0)
+        {
+            stopmBox.SetActive(true);
+        }
+        else {
+            stopmBox.SetActive(false);
+        }
 
 	}
 

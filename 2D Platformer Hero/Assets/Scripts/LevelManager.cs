@@ -18,11 +18,13 @@ public class LevelManager : MonoBehaviour {
     public int maxHealth;
     public int healthCount;
     private bool respawning;
+    public ResetOnRespawn objectToReset;
 	
 	void Start () {
         thePlayer = FindObjectOfType<PlayerController>();
         coinText.text = "Coins: " + coinCount;
         healthCount = maxHealth;
+        objectToReset = FindObjectOfType<ResetOnRespawn>();
 	
 	}
 	
@@ -48,6 +50,7 @@ public class LevelManager : MonoBehaviour {
         UpdateHeartMeter();
         thePlayer.transform.position = thePlayer.respawnPosition;
         thePlayer.gameObject.SetActive(true);
+        
     }
 
     public void AddCoins(int coinsToAdd) {
