@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour {
     public GameObject deathSplosion;
     public int coinCount;
     public Text coinText;
+    private int coinBonusLifeCount;
+    public int bonusLifeThreshold;
     public Image heart1;
     public Image heart2;
     public Image heart3;
@@ -18,14 +20,21 @@ public class LevelManager : MonoBehaviour {
     public int maxHealth;
     public int healthCount;
     private bool respawning;
-    public ResetOnRespawn objectToReset;
+    public ResetOnRespawn[] objectToReset;
+    public bool invincible;
+    public Text livesText;
+    public int startingLives;
+    public int currentLives;
+    public GameObject gameOverScreen;
+
 	
 	void Start () {
         thePlayer = FindObjectOfType<PlayerController>();
         coinText.text = "Coins: " + coinCount;
         healthCount = maxHealth;
-        objectToReset = FindObjectOfType<ResetOnRespawn>();
-	
+        objectToReset = FindObjectsOfType<ResetOnRespawn>();
+        currentLives = startingLives;
+        livesText.text = "Lives x " + currentLives;
 	}
 	
 	
@@ -35,10 +44,26 @@ public class LevelManager : MonoBehaviour {
             Respawn();
             respawning = true;
         }
+        if (coinBonusLifeCount >= bonusLifeThreshold)
+        {
+            currentLives += 1;
+            livesText.text = "Lives x " + currentLives;
+            coinBonusLifeCount -= bonusLifeThreshold;
+        }
 	}
 
     public void Respawn() {
-        StartCoroutine("RespawnCo");
+        currentLives -= 1;
+        livesText.text = "Lives x " + currentLives;
+        if (currentLives > 0)
+        {
+            StartCoroutine("RespawnCo");
+        }
+        else {
+            thePlayer.gameObject.SetActive(false);
+            gameOverScreen.SetActive(true);
+        }
+        
     }
 
     public IEnumerator RespawnCo() {
@@ -48,18 +73,38 @@ public class LevelManager : MonoBehaviour {
         healthCount = maxHealth;
         respawning = false;
         UpdateHeartMeter();
+        coinCount = 0;
+        coinText.text = "Coins: " + coinCount;
+        coinBonusLifeCount = 0;
         thePlayer.transform.position = thePlayer.respawnPosition;
         thePlayer.gameObject.SetActive(true);
+        for (int i = 0; i < objectToReset.Length; i++) {
+            objectToReset[i].ResetObject();
+            objectToReset[i].gameObject.SetActive(true);
+        }
         
     }
 
     public void AddCoins(int coinsToAdd) {
         coinCount += coinsToAdd;
+        coinBonusLifeCount += coinsToAdd;
         coinText.text = "Coins: " + coinCount;
     }
 
     public void HurtPlayer(int damageToTake) {
-        healthCount -= damageToTake;
+        if (!invincible)
+        {
+            healthCount -= damageToTake;
+            UpdateHeartMeter();
+            thePlayer.Knockback();
+        }
+    }
+
+    public void GiveHearth(int healthToGive) {
+        healthCount += healthToGive;
+        if (healthCount > maxHealth) {
+            healthCount = maxHealth;
+        }
         UpdateHeartMeter();
     }
 

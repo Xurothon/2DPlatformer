@@ -31,4 +31,8 @@ public class AenemyController : MonoBehaviour {
             gameObject.SetActive(false);
         }
     }
+
+    void OnEnable() {
+        canMove = false;
+    }
 }
