@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class LevelEnd : MonoBehaviour {
 
     public string levelToLoad;
+    public string levelToUnlock;
     private PlayerController thePlayer;
     private CameraController theCamera;
     private LevelManager theLevelManager;
@@ -41,8 +42,9 @@ public class LevelEnd : MonoBehaviour {
         theCamera.followTarget = false;
         theLevelManager.invincible = true;
         thePlayer.myRigidbody.velocity = Vector3.zero;
+        PlayerPrefs.SetInt("CoinCount", theLevelManager.coinCount);
         PlayerPrefs.SetInt("PlayerLives", theLevelManager.currentLives);
-        PlayerPrefs.SetInt("CoinCount",theLevelManager.coinCount);
+        PlayerPrefs.SetInt(levelToUnlock, 1);
         yield return new WaitForSeconds(waitToMove);
         movePlayer = true;
         yield return new WaitForSeconds(waitToLoad);

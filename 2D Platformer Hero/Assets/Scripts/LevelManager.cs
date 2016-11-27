@@ -36,14 +36,13 @@ public class LevelManager : MonoBehaviour {
             coinCount = PlayerPrefs.GetInt("CoinCount");
         }
         coinText.text = "Coins: " + coinCount;
-        if (!PlayerPrefs.HasKey("PlayerLives"))
+        if (PlayerPrefs.HasKey("PlayerLives"))
         {
-            currentLives = startingLives;
-        }
-        else {
             currentLives = PlayerPrefs.GetInt("PlayerLives");
         }
-        currentLives = startingLives;
+        else {
+            currentLives = startingLives;
+        }
         livesText.text = "Lives x " + currentLives;
 	}
 	
