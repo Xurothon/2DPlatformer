@@ -16,7 +16,7 @@ public class PauseScreen : MonoBehaviour {
 	}
 	
 	void Update () {
-	    if(Input.GetButtonDown("Pause")){
+	    if(Input.GetKeyDown(KeyCode.Escape)){
             if (Time.timeScale == 0f)
             {
                 ResumeGame();
