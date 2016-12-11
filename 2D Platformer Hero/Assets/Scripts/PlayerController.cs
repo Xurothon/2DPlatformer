@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
     public Animator myAnim;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     private float invinicibilityCounter;
     private bool onPlatform;
     public float onPlatformSpeedModifier;
+    private bool attack;
 
 	void Start () {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -63,6 +66,12 @@ public class PlayerController : MonoBehaviour {
             {
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, jumpSpeed, 0f);
             }
+            if (Input.GetButtonDown("Fire3"))
+            {
+                attack = true;
+            }
+            else { attack = false; }
+            myAnim.SetBool("Attack", attack);
             theLevelManager.invincible = false;
         }
         if (knockbackCounter > 0)
@@ -92,7 +101,8 @@ public class PlayerController : MonoBehaviour {
         else {
             stopmBox.SetActive(false);
         }
-
+        
+        
 	}
 
     public void Knockback() {
