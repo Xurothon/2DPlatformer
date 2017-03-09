@@ -42,9 +42,9 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
-  spritePivot: {x: 0.4, y: 0.37}
+  spritePivot: {x: 0.37, y: 0.34}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 600
+  spritePixelsToUnits: 545
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
