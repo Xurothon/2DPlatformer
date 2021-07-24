@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-public class HurtPlayer : MonoBehaviour
+public class HealthPickup : MonoBehaviour
 {
-    public int damageToGive;
-
+    public int healthToGive;
     private LevelManager _levelManager;
 
-    void Start()
+    private void Start()
     {
         _levelManager = FindObjectOfType<LevelManager>();
     }
@@ -15,7 +14,8 @@ public class HurtPlayer : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            _levelManager.HurtPlayer(damageToGive);
+            _levelManager.GiveHearth(healthToGive);
+            gameObject.SetActive(false);
         }
     }
 }

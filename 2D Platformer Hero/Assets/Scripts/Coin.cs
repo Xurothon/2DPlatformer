@@ -1,27 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Coin : MonoBehaviour {
-
-    private LevelManager theLevelManager;
+public class Coin : MonoBehaviour
+{
+    private LevelManager _levelManager;
     public int coinValue;
 
-	void Start () {
-        theLevelManager = FindObjectOfType<LevelManager>();
-	
-	}
-	
-	void Update () {
-	
-	}
+    private void Start()
+    {
+        _levelManager = FindObjectOfType<LevelManager>();
+    }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Player") {
-            theLevelManager.AddCoins(coinValue);
-            //Destroy(gameObject);
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            _levelManager.AddCoins(coinValue);
             gameObject.SetActive(false);
         }
     }
 }
-
-

@@ -1,35 +1,33 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class GameOver : MonoBehaviour {
-
+public class GameOver : MonoBehaviour
+{
     public string levelSelect;
     public string mainMenu;
-    private LevelManager theLevelManager;
+    private LevelManager _levelManager;
 
-	void Start () {
-        theLevelManager = FindObjectOfType<LevelManager>();
-	}
-	
-	void Update () {
-	
-	}
-
-    public void Restart() {
+    public void Restart()
+    {
         PlayerPrefs.SetInt("CoinCout", 0);
-        PlayerPrefs.SetInt("PlayerLives", theLevelManager.startingLives);
+        PlayerPrefs.SetInt("PlayerLives", _levelManager.startingLives);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void LevelSelect() {
+    public void LevelSelect()
+    {
         PlayerPrefs.SetInt("CoinCout", 0);
-        PlayerPrefs.SetInt("PlayerLives", theLevelManager.startingLives);
+        PlayerPrefs.SetInt("PlayerLives", _levelManager.startingLives);
         SceneManager.LoadScene(levelSelect);
     }
 
-    public void QuitToMainMenu() {
+    public void QuitToMainMenu()
+    {
         SceneManager.LoadScene(mainMenu);
     }
 
+    private void Start()
+    {
+        _levelManager = FindObjectOfType<LevelManager>();
+    }
 }
