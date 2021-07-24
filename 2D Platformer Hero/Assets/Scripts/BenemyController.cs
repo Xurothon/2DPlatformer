@@ -1,32 +1,36 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class BenemyController : MonoBehaviour {
-
+[RequireComponent(typeof(Rigidbody2D))]
+public class BenemyController : MonoBehaviour
+{
     public Transform leftPoint;
     public Transform rightPoint;
     public float moveSpeed;
-    private Rigidbody2D myRigidbody;
-    public bool movingRight;
+    private Rigidbody2D _myRigidbody;
+    public bool _isMovingRight;
 
-	void Start () {
-        myRigidbody = GetComponent<Rigidbody2D>();
-	}
-	
-	void Update () {
-        if (movingRight && transform.position.x > rightPoint.position.x) {
-            movingRight = false;
-        }
-        if (!movingRight && transform.position.x < leftPoint.position.x) {
-            movingRight = true;
-        }
-        if (movingRight)
+    private void Start()
+    {
+        _myRigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (_isMovingRight && transform.position.x > rightPoint.position.x)
         {
-            myRigidbody.velocity = new Vector3(moveSpeed, myRigidbody.velocity.y, 0f);
+            _isMovingRight = false;
         }
-        else {
-            myRigidbody.velocity = new Vector3(-moveSpeed, myRigidbody.velocity.y, 0f);
+        if (!_isMovingRight && transform.position.x < leftPoint.position.x)
+        {
+            _isMovingRight = true;
         }
-	
-	}
+        if (_isMovingRight)
+        {
+            _myRigidbody.velocity = new Vector3(moveSpeed, _myRigidbody.velocity.y, 0f);
+        }
+        else
+        {
+            _myRigidbody.velocity = new Vector3(-moveSpeed, _myRigidbody.velocity.y, 0f);
+        }
+    }
 }

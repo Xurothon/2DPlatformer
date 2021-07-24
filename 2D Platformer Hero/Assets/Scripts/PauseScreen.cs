@@ -1,54 +1,60 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class PauseScreen : MonoBehaviour {
-
+public class PauseScreen : MonoBehaviour
+{
     public string levelSelect;
     public string mainMenu;
-    private LevelManager theLevelManager;
     public GameObject thePauseScreen;
-    private PlayerController thePlayer;
+    private PlayerController _player;
+    private LevelManager _levelManager;
 
-	void Start () {
-        theLevelManager = FindObjectOfType<LevelManager>();
-        thePlayer = FindObjectOfType<PlayerController>();
-	}
-	
-	void Update () {
-	    if(Input.GetKeyDown(KeyCode.Escape)){
-            if (Time.timeScale == 0f)
-            {
-                ResumeGame();
-            }
-            else {
-                PauseGame();
-            }
-        }
-	}
-
-    public void PauseGame() {
+    public void PauseGame()
+    {
         Time.timeScale = 0;
         thePauseScreen.SetActive(true);
-        thePlayer.canMove = false;
+        _player.canMove = false;
     }
 
-    public void ResumeGame() {
+    public void ResumeGame()
+    {
         thePauseScreen.SetActive(false);
         Time.timeScale = 1;
-        thePlayer.canMove = true;
+        _player.canMove = true;
     }
 
     public void LevelSelect()
     {
-        PlayerPrefs.SetInt("PlayerLives", theLevelManager.currentLives);
-        PlayerPrefs.SetInt("CoinCount", theLevelManager.coinCount);
+        PlayerPrefs.SetInt("PlayerLives", _levelManager.currentLives);
+        PlayerPrefs.SetInt("CoinCount", _levelManager.coinCount);
         Time.timeScale = 1f;
         SceneManager.LoadScene(levelSelect);
     }
 
-    public void MainMenu() {
+    public void MainMenu()
+    {
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenu);
+    }
+
+    private void Start()
+    {
+        _levelManager = FindObjectOfType<LevelManager>();
+        _player = FindObjectOfType<PlayerController>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.timeScale == 0f)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
     }
 }
