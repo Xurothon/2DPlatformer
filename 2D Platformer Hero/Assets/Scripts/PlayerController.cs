@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Threading;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
+    public Animator myAnim;
     public float moveSpeed;
+    private float activeMoveSpeed;
     public bool canMove;
     public float jumpSpeed;
-    public Rigidbody2D playerRigidbody;
+    public Rigidbody2D myRigidbody;
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask whatIsGround;
@@ -16,64 +19,59 @@ public class PlayerController : MonoBehaviour
     public GameObject stopmBox;
     public float knokbackForce;
     public float knockbackLength;
-    public float invinicibilityLength;
-    public float onPlatformSpeedModifier;
-    private bool _isAttack;
-    private Animator _animator;
-    private float invinicibilityCounter;
-    private bool _isOnPlatform;
     private float knockbackCounter;
-    private float activeMoveSpeed;
+    public float invinicibilityLength;
+    private float invinicibilityCounter;
+    private bool onPlatform;
+    public float onPlatformSpeedModifier;
+    private bool attack;
 
-    private void Start()
-    {
-        playerRigidbody = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
+	void Start () {
+        myRigidbody = GetComponent<Rigidbody2D>();
+        myAnim = GetComponent<Animator>();
         respawnPosition = transform.position;
         theLevelManager = FindObjectOfType<LevelManager>();
         activeMoveSpeed = moveSpeed;
         canMove = true;
     }
-
-    private void Update()
-    {
+	
+	void Update () {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         if (knockbackCounter <= 0 && canMove)
         {
-            if (_isOnPlatform)
+            if (onPlatform)
             {
                 activeMoveSpeed = moveSpeed * onPlatformSpeedModifier;
             }
-            else
-            {
+            else {
                 activeMoveSpeed = moveSpeed;
             }
 
             if (Input.GetAxisRaw("Horizontal") > 0f)
             {
-                playerRigidbody.velocity = new Vector3(activeMoveSpeed, playerRigidbody.velocity.y, 0f);
+                myRigidbody.velocity = new Vector3(activeMoveSpeed, myRigidbody.velocity.y, 0f);
                 transform.localScale = new Vector3(1f, 1f, 1f);
             }
             else if (Input.GetAxisRaw("Horizontal") < 0f)
             {
-                playerRigidbody.velocity = new Vector3(-activeMoveSpeed, playerRigidbody.velocity.y, 0f);
+                myRigidbody.velocity = new Vector3(-activeMoveSpeed, myRigidbody.velocity.y, 0f);
                 transform.localScale = new Vector3(-1f, 1f, 1f);
             }
             else
             {
-                playerRigidbody.velocity = new Vector3(0f, playerRigidbody.velocity.y, 0f);
+                myRigidbody.velocity = new Vector3(0f, myRigidbody.velocity.y, 0f);
             }
 
             if (Input.GetButtonDown("Jump") && isGrounded)
             {
-                playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, jumpSpeed, 0f);
+                myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, jumpSpeed, 0f);
             }
             if (Input.GetButtonDown("Fire3"))
             {
-                _isAttack = true;
+                attack = true;
             }
-            else { _isAttack = false; }
-            _animator.SetBool("Attack", _isAttack);
+            else { attack = false; }
+            myAnim.SetBool("Attack", attack);
             theLevelManager.invincible = false;
         }
         if (knockbackCounter > 0)
@@ -81,67 +79,59 @@ public class PlayerController : MonoBehaviour
             knockbackCounter -= Time.deltaTime;
             if (transform.localScale.x > 0)
             {
-                playerRigidbody.velocity = new Vector3(-knokbackForce, knokbackForce, 0f);
+                myRigidbody.velocity = new Vector3(-knokbackForce, knokbackForce, 0f);
             }
             else
             {
-                playerRigidbody.velocity = new Vector3(knokbackForce, knokbackForce, 0f);
+                myRigidbody.velocity = new Vector3(knokbackForce, knokbackForce, 0f);
             }
         }
-        if (invinicibilityCounter > 0)
-        {
+        if (invinicibilityCounter > 0) {
             invinicibilityCounter -= Time.deltaTime;
         }
-        else
-        {
+        if (invinicibilityCounter <= 0) {
             theLevelManager.invincible = false;
         }
-        _animator.SetFloat("Speed", Mathf.Abs(playerRigidbody.velocity.x));
-        _animator.SetBool("Grounded", isGrounded);
-        if (playerRigidbody.velocity.y < 0)
+        myAnim.SetFloat("Speed", Mathf.Abs(myRigidbody.velocity.x));
+        myAnim.SetBool("Grounded",isGrounded);
+        if (myRigidbody.velocity.y < 0)
         {
             stopmBox.SetActive(true);
         }
-        else
-        {
+        else {
             stopmBox.SetActive(false);
         }
-    }
+        
+        
+	}
 
-    public void Knockback()
-    {
+    public void Knockback() {
         knockbackCounter = knockbackLength;
         invinicibilityCounter = invinicibilityLength;
         theLevelManager.invincible = true;
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "KillPlane")
-        {
+    
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "KillPlane") {
             theLevelManager.Respawn();
         }
-        if (other.tag == "Checkpoint")
-        {
+        if (other.tag == "Checkpoint") {
             respawnPosition = other.transform.position;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.tag == "MovingPlatform")
-        {
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.tag == "MovingPlatform") {
             transform.parent = other.transform;
-            _isOnPlatform = true;
+            onPlatform = true;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.tag == "MovingPlatform")
-        {
+    void OnCollisionExit2D(Collision2D other) {
+        if (other.gameObject.tag == "MovingPlatform") {
             transform.parent = null;
-            _isOnPlatform = false;
+            onPlatform = false;
         }
     }
+
 }

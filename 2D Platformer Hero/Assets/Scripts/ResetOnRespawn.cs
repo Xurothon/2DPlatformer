@@ -1,29 +1,33 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class ResetOnRespawn : MonoBehaviour
-{
-    private Vector3 _startPosition;
-    private Quaternion _startRotation;
-    private Vector3 _startLocalScale;
-    private Rigidbody2D _myRidybody;
+public class ResetOnRespawn : MonoBehaviour {
 
-    public void ResetObject()
-    {
-        transform.position = _startPosition;
-        transform.rotation = _startRotation;
-        transform.localScale = _startLocalScale;
-        if (_myRidybody != null)
-        {
-            _myRidybody.velocity = Vector3.zero;
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+    private Vector3 startLocalScale;
+    private Rigidbody2D myRidybody;
+
+	void Start () {
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+        startLocalScale = transform.localScale;
+        if (GetComponent<Rigidbody2D>() != null) {
+            myRidybody = GetComponent<Rigidbody2D>();
         }
-    }
+        
+	}
+	
+	void Update () {
+	
+	}
 
-    private void Start()
-    {
-        _startPosition = transform.position;
-        _startRotation = transform.rotation;
-        _startLocalScale = transform.localScale;
-        _myRidybody = GetComponent<Rigidbody2D>();
+    public void ResetObject() {
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+        transform.localScale = startLocalScale;
+        if (myRidybody != null) {
+            myRidybody.velocity = Vector3.zero;
+        }
     }
 }

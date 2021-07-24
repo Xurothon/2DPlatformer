@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-public class StompEnemy : MonoBehaviour
-{
+public class StompEnemy : MonoBehaviour {
+
+    private Rigidbody2D playerRigidbody;
     public float bounceForce;
     public GameObject deathSplosion;
-    private Rigidbody2D playerRigidbody;
 
-    private void Start()
-    {
+	void Start () {
         playerRigidbody = transform.parent.GetComponent<Rigidbody2D>();
-    }
+	}
+	
+	void Update () {
+	
+	}
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Enemy")
-        {
+    void OnTriggerEnter2D(Collider2D other){
+        if (other.tag == "Enemy") {
             other.gameObject.SetActive(false);
             Instantiate(deathSplosion, other.transform.position, other.transform.rotation);
             playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, bounceForce, 0f);
         }
     }
+
 }

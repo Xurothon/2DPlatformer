@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-public class DestroyOverTime : MonoBehaviour
-{
+public class DestroyOverTime : MonoBehaviour {
+
     public float lifeTime;
 
-    private void Update()
-    {
+	void Start () {
+	
+	}
+	
+	void Update () {
         lifeTime = lifeTime - Time.deltaTime;
-        if (lifeTime <= 0f)
-        {
+        if (lifeTime <= 0f) {
             Destroy(gameObject);
         }
-    }
+
+	}
 }

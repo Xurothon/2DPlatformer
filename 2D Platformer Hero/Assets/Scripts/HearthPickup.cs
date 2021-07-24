@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Coin : MonoBehaviour {
+public class HearthPickup : MonoBehaviour {
 
+    public int healthToGive;
     private LevelManager theLevelManager;
-    public int coinValue;
 
 	void Start () {
         theLevelManager = FindObjectOfType<LevelManager>();
@@ -17,11 +17,8 @@ public class Coin : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
-            theLevelManager.AddCoins(coinValue);
-            //Destroy(gameObject);
+            theLevelManager.GiveHearth(healthToGive);
             gameObject.SetActive(false);
         }
     }
 }
-
-

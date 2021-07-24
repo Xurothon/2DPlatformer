@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
+
     public GameObject target;
     public float followAhead;
     public float smoothing;
-    public bool followTarget;
     private Vector3 targetPosition;
+    public bool followTarget;
 
-    private void Start()
+    void Start()
     {
         followTarget = true;
     }
 
-    private void Update()
+    void Update()
     {
         if (followTarget)
         {
@@ -21,12 +23,15 @@ public class CameraController : MonoBehaviour
 
             if (target.transform.localScale.x > 0f)
             {
-                targetPosition += new Vector3(followAhead, 0, 0);
+                targetPosition = new Vector3(targetPosition.x + followAhead, targetPosition.y, targetPosition.z);
+
             }
             else
             {
-                targetPosition -= new Vector3(followAhead, 0, 0);
+                targetPosition = new Vector3(targetPosition.x - followAhead, targetPosition.y, targetPosition.z);
             }
+
+            //transform.position = targetPosition;
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing * Time.deltaTime);
         }
